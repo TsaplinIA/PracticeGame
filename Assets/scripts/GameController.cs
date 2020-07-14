@@ -9,32 +9,35 @@ public class GameController : MonoBehaviour
 {
     const float MAX_SPEED = 7;
     const float MIN_SPEED = 4;
-    const int PRIZE = 55;
-    const float PROGRESS = 0.1f;
-    public float speed;
+    const int PRIZE = 55;// prize for destroy enemy
+    const float PROGRESS = 0.1f;// how fast speed go up
+    public float speed;// speed right now
     public GameObject stars;
     ParticleSystem starSystem;
-    int score;
-    List<GameObject> enemys = new List<GameObject>();
-    const float START_Y = 6.5f;
-    const float START_X = 1.85f;
+    List<GameObject> enemys = new List<GameObject>();// all enemys on scene
+    const float START_Y = 6.5f;// for spawn enemy
+    const float START_X = 1.85f;// for spawn enemy
 
+    public Sprite[] playerTextures;
     public GameObject player;
     public GameObject gun;
     public GameObject gunMarker;
     Transform playerTransform;
     public GameObject enemyPrefab;
     public GameObject bulletPrefab;
-    public float bulletTime;
+    public float bulletTime;// how long gun reload
     float timeNow = 0;
+    MemoryScript memory;
 
     public GameObject target;
 
     void Start()
     {
+        memory = Camera.main.GetComponent<MemoryScript>();
         starSystem = stars.GetComponent<ParticleSystem>();
-        starSystem.startSpeed = MIN_SPEED;
+        starSystem.startSpeed = MIN_SPEED;//set star speed
         playerTransform = player.transform;
+        player.GetComponent<SpriteRenderer>().sprite = playerTextures[memory.GetSelect()];
         SpawnEnemy();
     }
 
@@ -46,7 +49,7 @@ public class GameController : MonoBehaviour
         //Camera.main.GetComponent<UIScript>().bulletsSystem.trigger.
     }
 
-    GameObject GetTarget()
+    GameObject GetTarget()//get nearest enemy
     {
         float playerY = playerTransform.position.y;
         GameObject target = null;
@@ -65,7 +68,7 @@ public class GameController : MonoBehaviour
         return target;
     }
 
-    void LookAt2D(Transform itTF, Transform targetTF)
+    void LookAt2D(Transform itTF, Transform targetTF)// rotate one to the other in 2D space
     {
         Vector3 diff = targetTF.position - itTF.position;
         diff.Normalize();
@@ -73,25 +76,24 @@ public class GameController : MonoBehaviour
         gun.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
     }
     
-    void CreateBullet()
+    void CreateBullet() // spawn bullet
     {
         GameObject bullet = Instantiate(bulletPrefab);
         bullet.transform.localRotation = gun.transform.localRotation;
         bullet.transform.position = gunMarker.transform.position;
-        //Debug.Log(gunMarker.transform.position);
     }
 
-    public void DestroyEnemy(GameObject enemy)
+    public void DestroyEnemy(GameObject enemy)//destroy enemy object and give prize
     {
         enemys.Remove(enemy);
         Destroy(enemy);
         SpawnEnemy();
-        Camera.main.GetComponent<MemoryScript>().AddCoins(PRIZE);
+        memory.AddCoins(PRIZE);
         speed += PROGRESS * (MAX_SPEED - speed);
         starSystem.startSpeed = speed;
     }
 
-    public void GoToMenu()
+    public void GoToMenu()// void for menu button
     {
         SceneManager.LoadScene(0);
     }
@@ -100,7 +102,7 @@ public class GameController : MonoBehaviour
     {
         if (enemys.Count <= 0) SpawnEnemy();
         target = GetTarget();
-        if (target != null) LookAt2D(gun.transform, target.transform); ;
+        if (target != null) LookAt2D(gun.transform, target.transform);
         timeNow += Time.deltaTime;
         if (timeNow >= bulletTime)
         {

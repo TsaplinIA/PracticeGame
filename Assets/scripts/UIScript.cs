@@ -17,7 +17,7 @@ public class UIScript : MonoBehaviour
         coinsText = coinsTextObj.GetComponent<Text>();
         memory = Camera.main.GetComponent<MemoryScript>();
     }
-    Color GetGradColor(float percent)
+    Color GetGradColor(float percent) // calculate select color
     {
         if (percent <= 1 && percent >= 0)
         {
@@ -35,9 +35,9 @@ public class UIScript : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            selectColor = GetGradColor(Input.mousePosition.x / Camera.main.pixelWidth);
+            selectColor = GetGradColor(Input.mousePosition.x / Camera.main.pixelWidth);// change select color
         }
 
-        coinsText.text = "" + memory.GetCoins();
+        coinsText.text = "" + memory.GetCoins();//update coins
     }
 }

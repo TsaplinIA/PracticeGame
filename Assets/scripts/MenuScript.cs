@@ -19,10 +19,11 @@ public class MenuScript : MonoBehaviour
     void Start()
     {
         memory = Camera.main.GetComponent<MemoryScript>();
-        memory.OpenAccess(0);
+        if (!memory.GetAccess(0))
+            memory.OpenAccess(0);
         coinsText = coins.GetComponent<Text>();
         select = memory.GetSelect();
-        for (int i = 0; i <= isAccessArr.Length - 1; i++) 
+        for (int i = 0; i <= isAccessArr.Length - 1; i++) // get and use ships info
         {
             priseObjs[i].GetComponent<Text>().text = "" + priseArr[i];
             bool isAccess = memory.GetAccess(i);
@@ -48,7 +49,7 @@ public class MenuScript : MonoBehaviour
     }
 
 
-    public void OpenAccess(int number)
+    public void OpenAccess(int number)// open access to ship
     {
         if (priseArr[number] <= memory.GetCoins() && !isAccessArr[number])
         {
@@ -61,7 +62,7 @@ public class MenuScript : MonoBehaviour
         }
     }
 
-    public void CloseAccess(int number)
+    public void CloseAccess(int number)// close access to ship
     {
         memory.TakeAwayCoins(priseArr[number]);
         memory.CloseAccess(number);
@@ -69,7 +70,7 @@ public class MenuScript : MonoBehaviour
         priseObjs[number].SetActive(true);
     }
 
-    public void SetSelect(int number)
+    public void SetSelect(int number) // change selected ship
     {
         if (isAccessArr[number])
         {
@@ -82,17 +83,16 @@ public class MenuScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        coinsText.text = "" + memory.GetCoins();
+        coinsText.text = "" + memory.GetCoins(); // update coins
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))//for debug 
         {
             PlayerPrefs.DeleteAll();
             Debug.Log("ClearMemory");
-            memory.AddCoins(2000);
         }
     }
 
-    public void Play()
+    public void Play()// void for Play button
     {
         Debug.Log("PLAY");
         SceneManager.LoadScene(1);

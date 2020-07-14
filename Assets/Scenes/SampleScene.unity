@@ -482,6 +482,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   stars: {fileID: 729199230}
+  playerTextures:
+  - {fileID: 21300000, guid: aa3c9ac3e289cd14eb51785f16a9b29a, type: 3}
+  - {fileID: 21300000, guid: e5a22d476bdb33946a9ef5cf5caf6cf7, type: 3}
+  - {fileID: 21300000, guid: e5a22d476bdb33946a9ef5cf5caf6cf7, type: 3}
+  - {fileID: 21300000, guid: e5a22d476bdb33946a9ef5cf5caf6cf7, type: 3}
+  - {fileID: 21300000, guid: e5a22d476bdb33946a9ef5cf5caf6cf7, type: 3}
+  - {fileID: 21300000, guid: e5a22d476bdb33946a9ef5cf5caf6cf7, type: 3}
   player: {fileID: 1998745163}
   gun: {fileID: 636026291}
   gunMarker: {fileID: 683622527}
